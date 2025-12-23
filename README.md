@@ -6,6 +6,6 @@
   web框架：
   go get -u github.com/gin-gonic/gin
   数据库：
-  go get gorm.io/driver/mysql
-  go get gorm.io/gorm
+  go get -u gorm.io/driver/mysql
+  go get -u gorm.io/gorm
   

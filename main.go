@@ -35,8 +35,6 @@ func main() {
 	handler.UserGroup = router.Group("/api/user")
 	handler.PostGroup = router.Group("/api/post")
 	handler.CommentGroup = router.Group("/api/comment")
-	handler.PostGroup.Use(handler.JWTTokenMiddleware)
-	handler.CommentGroup.Use(handler.JWTTokenMiddleware)
 	handler.UserHandler()
 	handler.PostHandler()
 	handler.CommentHandler()

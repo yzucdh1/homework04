@@ -29,8 +29,8 @@ func JWTTokenMiddleware(c *gin.Context) {
 	tokenString := parts[1] // 提取纯Token字符串
 
 	// 3. 解析并验证Token
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// 验证签名算法是否为 HS256
+	token, err := jwt.ParseWithClaims(tokenString, jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
+		// 验证签名算法是否为HS256
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("不支持的签名算法")
 		}
@@ -45,7 +45,15 @@ func JWTTokenMiddleware(c *gin.Context) {
 	}
 
 	// 5. 验证Token有效性
-	if !token.Valid {
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		userId, ok := claims["id"].(float64)
+		if !ok {
+			c.JSON(http.StatusUnauthorized, response.ErrorWithCode(response.UNAUTHORIZED, "Token无效"))
+			c.Abort()
+			return
+		}
+		c.Set("userId", uint(uint64(userId)))
+	} else {
 		c.JSON(http.StatusUnauthorized, response.ErrorWithCode(response.UNAUTHORIZED, "Token无效"))
 		c.Abort()
 		return

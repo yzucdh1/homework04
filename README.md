@@ -8,4 +8,9 @@
   数据库：
   go get -u gorm.io/driver/mysql
   go get -u gorm.io/gorm
-  
+  解析yaml文件：
+  go get -u gopkg.in/yaml.v3
+  jwt：
+  go get -u github.com/golang-jwt/jwt/v5
+  uuid：
+  go get -u github.com/google/uuid

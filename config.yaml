@@ -1,0 +1,12 @@
+# 数据库配置
+database:
+  driver: "mysql"               # 数据库驱动（mysql/postgres/sqlite 等）
+  dsn: "root:123456@tcp(127.0.0.1:3306)/gorm_demo?charset=utf8mb4&parseTime=True&loc=Local"
+  max_open_conns: 10            # 最大打开连接数
+  max_idle_conns: 5             # 最大空闲连接数
+  conn_max_lifetime: 300        # 连接最大生命周期（秒）
+  conn_max_idle_time: 60        # 连接最大空闲时间（秒）
+
+# 其他配置（如服务端口、日志等级等，可按需添加）
+server:
+  port: 8080

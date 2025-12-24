@@ -13,7 +13,6 @@ type User struct {
 	Username  string         `gorm:"unique;not null"`
 	Password  string         `gorm:"not null"`
 	Email     string         `gorm:"unique;not null"`
-	SecretKey string         `gorm:"not null"`
 	Posts     []Post         `gorm:"foreignkey:UserID"`
 	Comments  []Comment      `gorm:"foreignkey:UserID"`
 }

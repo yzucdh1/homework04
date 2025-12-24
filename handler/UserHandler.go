@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 	"github.com/yzucdh1/homework04/global"
 	"github.com/yzucdh1/homework04/model"
 	"github.com/yzucdh1/homework04/request"
@@ -23,7 +22,7 @@ func UserHandler() {
 func Register(c *gin.Context) {
 	var user request.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		msg := global.GetValidMessage(err, &user)
+		msg := GetValidMessage(err, &user)
 		c.JSON(http.StatusBadRequest, response.ErrorWithCode(response.FAIL, msg))
 		return
 	}
@@ -35,10 +34,9 @@ func Register(c *gin.Context) {
 	}
 
 	dbUser := model.User{
-		Username:  user.Username,
-		Password:  string(hashedPassword),
-		Email:     user.Email,
-		SecretKey: uuid.New().String(),
+		Username: user.Username,
+		Password: string(hashedPassword),
+		Email:    user.Email,
 	}
 
 	if err := global.DB.Create(&dbUser).Error; err != nil {
@@ -52,7 +50,7 @@ func Register(c *gin.Context) {
 func Login(c *gin.Context) {
 	var loginReq request.LoginReq
 	if err := c.ShouldBindJSON(&loginReq); err != nil {
-		msg := global.GetValidMessage(err, &loginReq)
+		msg := GetValidMessage(err, &loginReq)
 		c.JSON(http.StatusBadRequest, response.ErrorWithCode(response.FAIL, msg))
 		return
 	}
@@ -75,7 +73,7 @@ func Login(c *gin.Context) {
 		"username": storedUser.Username,
 		"exp":      time.Now().Add(time.Hour * 24).Unix(),
 	})
-	tokenString, err := token.SignedString([]byte(storedUser.SecretKey))
+	tokenString, err := token.SignedString([]byte(global.Cfg.Server.SecretKey))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, response.ErrorWithCode(response.ERROR, "系统错误"))
 		return

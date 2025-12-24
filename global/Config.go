@@ -27,7 +27,8 @@ type DatabaseConfig struct {
 
 // ServerConfig 服务配置结构体（可选）
 type ServerConfig struct {
-	Port int `yaml:"port"`
+	Port      int    `yaml:"port"`
+	SecretKey string `yaml:"secret_key"`
 }
 
 // InitConfig 初始化配置：读取并解析 config.yaml

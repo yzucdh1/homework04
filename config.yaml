@@ -10,3 +10,4 @@ database:
 # 其他配置（如服务端口、日志等级等，可按需添加）
 server:
   port: 8080
+  secret_key: f3987a44-c235-44c9-82fa-001c4b20e13d

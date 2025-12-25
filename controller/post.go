@@ -1,4 +1,4 @@
-package handler
+package controller
 
 import (
 	"errors"
@@ -11,18 +11,9 @@ import (
 	"net/http"
 )
 
-var PostGroup *gin.RouterGroup
+type PostController struct{}
 
-func PostHandler() {
-	PostGroup.Use(JWTTokenMiddleware)
-	PostGroup.POST("/create", PostCreate)
-	PostGroup.POST("/list", PostList)
-	PostGroup.GET("/detail/:id", PostDetail)
-	PostGroup.POST("/update", PostUpdate)
-	PostGroup.GET("/delete/:id", PostDelete)
-}
-
-func PostCreate(c *gin.Context) {
+func (pc *PostController) PostCreate(c *gin.Context) {
 	var req = request.PostCreateReq{}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		msg := GetValidMessage(err, &req)
@@ -45,7 +36,7 @@ func PostCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Ok(""))
 }
 
-func PostList(c *gin.Context) {
+func (pc *PostController) PostList(c *gin.Context) {
 	var req = request.PostListReq{}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		msg := GetValidMessage(err, &req)
@@ -75,7 +66,7 @@ func PostList(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Ok(result))
 }
 
-func PostDetail(c *gin.Context) {
+func (pc *PostController) PostDetail(c *gin.Context) {
 	var req request.PostDetailReq
 	if err := c.ShouldBindUri(&req); err != nil {
 		c.JSON(http.StatusBadRequest, response.ErrorWithCode(response.FAIL, "参数错误"))
@@ -94,7 +85,7 @@ func PostDetail(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Ok(post))
 }
 
-func PostUpdate(c *gin.Context) {
+func (pc *PostController) PostUpdate(c *gin.Context) {
 	var req request.PostUpdateReq
 	if err := c.ShouldBind(&req); err != nil {
 		msg := GetValidMessage(err, &req)
@@ -128,7 +119,7 @@ func PostUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Ok(""))
 }
 
-func PostDelete(c *gin.Context) {
+func (pc *PostController) PostDelete(c *gin.Context) {
 	var req request.PostDetailReq
 	if err := c.ShouldBindUri(&req); err != nil {
 		c.JSON(http.StatusBadRequest, response.ErrorWithCode(response.FAIL, "参数错误"))

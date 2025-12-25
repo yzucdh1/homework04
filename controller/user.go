@@ -1,4 +1,4 @@
-package handler
+package controller
 
 import (
 	"github.com/gin-gonic/gin"
@@ -12,14 +12,9 @@ import (
 	"time"
 )
 
-var UserGroup *gin.RouterGroup
+type UserController struct{}
 
-func UserHandler() {
-	UserGroup.POST("/register", Register)
-	UserGroup.POST("/login", Login)
-}
-
-func Register(c *gin.Context) {
+func (uc *UserController) Register(c *gin.Context) {
 	var user request.UserCreateReq
 	if err := c.ShouldBindJSON(&user); err != nil {
 		msg := GetValidMessage(err, &user)
@@ -47,7 +42,7 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Ok(""))
 }
 
-func Login(c *gin.Context) {
+func (uc *UserController) Login(c *gin.Context) {
 	var loginReq request.LoginReq
 	if err := c.ShouldBindJSON(&loginReq); err != nil {
 		msg := GetValidMessage(err, &loginReq)

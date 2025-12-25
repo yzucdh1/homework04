@@ -1,4 +1,4 @@
-package handler
+package controller
 
 import (
 	"errors"
@@ -11,15 +11,9 @@ import (
 	"net/http"
 )
 
-var CommentGroup *gin.RouterGroup
+type CommentController struct{}
 
-func CommentHandler() {
-	CommentGroup.Use(JWTTokenMiddleware)
-	CommentGroup.POST("/create", CommentCreate)
-	CommentGroup.GET("/list/:pId", CommentList)
-}
-
-func CommentCreate(c *gin.Context) {
+func (cc *CommentController) CommentCreate(c *gin.Context) {
 	var req request.CommentCreateReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		msg := GetValidMessage(err, &req)
@@ -51,7 +45,7 @@ func CommentCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Ok(""))
 }
 
-func CommentList(c *gin.Context) {
+func (cc *CommentController) CommentList(c *gin.Context) {
 	var req request.CommentListReq
 	if err := c.ShouldBindUri(&req); err != nil {
 		c.JSON(http.StatusBadRequest, response.ErrorWithCode(response.FAIL, "参数错误"))

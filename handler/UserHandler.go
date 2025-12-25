@@ -20,7 +20,7 @@ func UserHandler() {
 }
 
 func Register(c *gin.Context) {
-	var user request.User
+	var user request.UserCreateReq
 	if err := c.ShouldBindJSON(&user); err != nil {
 		msg := GetValidMessage(err, &user)
 		c.JSON(http.StatusBadRequest, response.ErrorWithCode(response.FAIL, msg))

@@ -10,13 +10,13 @@ import (
 func main() {
 	err := global.InitConfig()
 	if err != nil {
-		fmt.Println("读取配置文件失败", err)
+		log.Fatal("读取配置文件失败", err)
 		return
 	}
 
 	err = global.Connect()
 	if err != nil {
-		fmt.Println("数据库连接失败", err)
+		log.Fatal("数据库连接失败", err)
 		return
 	}
 

@@ -27,7 +27,7 @@ func main() {
 	//}
 
 	// 设置日志模式
-	//gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.DebugMode)
 	// 创建一个默认的路由
 	router := gin.Default()
 

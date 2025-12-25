@@ -21,6 +21,13 @@ func (uc *UserController) Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response.ErrorWithCode(response.FAIL, msg))
 		return
 	}
+
+	// 校验用户名和邮箱是否已存在
+	if err := global.DB.Where("username = ? or email = ?", user.Username, user.Email).Take(&model.User{}).Error; err == nil {
+		c.JSON(http.StatusBadRequest, response.ErrorWithCode(response.FAIL, "用户名或邮箱已存在"))
+		return
+	}
+
 	// 加密密码
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
